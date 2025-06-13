@@ -1,578 +1,137 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario de Asignación de Tiempo por Actividades</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <title>Formulario Distribución de Tiempo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+    }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            min-height: 100vh;
-            padding: 20px;
-            line-height: 1.6;
-        }
+    h2 {
+      text-align: center;
+      color: #4285f4;
+    }
 
-        .form-container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            max-width: 1000px;
-            margin: 0 auto;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
+    input, select, textarea {
+      width: 100%;
+      padding: 8px;
+      margin: 8px 0;
+      box-sizing: border-box;
+    }
 
-        .form-title {
-            text-align: center;
-            color: #1e3c72;
-            margin-bottom: 30px;
-            font-size: 2.2em;
-            font-weight: 700;
-        }
+    button {
+      background-color: #4285f4;
+      color: white;
+      padding: 10px;
+      border: none;
+      width: 100%;
+      font-size: 16px;
+    }
 
-        .section {
-            margin-bottom: 30px;
-            padding: 20px;
-            background: rgba(248, 249, 250, 0.8);
-            border-radius: 15px;
-            border-left: 5px solid #1e3c72;
-        }
+    .radio-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
 
-        .section-title {
-            color: #1e3c72;
-            font-size: 1.4em;
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #333;
-            font-weight: 500;
-            font-size: 14px;
-        }
-
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e1e5e9;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: all 0.3s ease;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: #1e3c72;
-            box-shadow: 0 0 10px rgba(30, 60, 114, 0.2);
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-        }
-
-        .definitions {
-            background: #e8f4f8;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-        }
-
-        .definitions h3 {
-            color: #1e3c72;
-            margin-bottom: 15px;
-        }
-
-        .definitions p {
-            margin-bottom: 15px;
-            text-align: justify;
-        }
-
-        .activity-grid {
-            overflow-x: auto;
-            margin-top: 20px;
-        }
-
-        .grid-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .grid-table th,
-        .grid-table td {
-            padding: 12px;
-            text-align: center;
-            border: 1px solid #ddd;
-        }
-
-        .grid-table th {
-            background: #1e3c72;
-            color: white;
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .grid-table tr:nth-child(even) {
-            background: #f8f9fa;
-        }
-
-        .activity-name {
-            text-align: left !important;
-            font-weight: 500;
-            color: #333;
-            min-width: 200px;
-        }
-
-        .radio-group {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .radio-group input[type="radio"] {
-            width: auto;
-            margin: 0;
-            transform: scale(1.2);
-            cursor: pointer;
-        }
-
-        .total-display {
-            background: #fff3cd;
-            border: 2px solid #ffeaa7;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
-            text-align: center;
-        }
-
-        .total-percentage {
-            font-size: 2em;
-            font-weight: bold;
-            color: #856404;
-            margin: 10px 0;
-        }
-
-        .warning {
-            color: #721c24;
-            background: #f8d7da;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 10px 0;
-            border: 1px solid #f5c6cb;
-            display: none;
-        }
-
-        .success {
-            color: #155724;
-            background: #d4edda;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 10px 0;
-            border: 1px solid #c3e6cb;
-            display: none;
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 18px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 20px;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(30, 60, 114, 0.3);
-        }
-
-        .submit-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .loading {
-            display: none;
-            text-align: center;
-            margin-top: 20px;
-            color: #1e3c72;
-            font-weight: 500;
-        }
-
-        @media (max-width: 768px) {
-            .form-container {
-                padding: 20px;
-                margin: 10px;
-            }
-            
-            .grid-table {
-                font-size: 12px;
-            }
-            
-            .grid-table th,
-            .grid-table td {
-                padding: 8px 4px;
-            }
-            
-            .form-title {
-                font-size: 1.8em;
-            }
-        }
-    </style>
+    .radio-group label {
+      width: 48%;
+    }
+  </style>
 </head>
 <body>
-    <div class="form-container">
-        <h1 class="form-title">Formulario de Asignación de Tiempo por Actividades</h1>
-        
-        <form id="activityForm">
-            <!-- Información Personal -->
-            <div class="section">
-                <h2 class="section-title">Información Personal</h2>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="nombre">Nombre Completo *</label>
-                        <input type="text" id="nombre" name="nombre" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="proceso">Nombre del Proceso o Área *</label>
-                        <input type="text" id="proceso" name="proceso" required>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="cedula">Cédula *</label>
-                        <input type="text" id="cedula" name="cedula" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="cargo">Cargo *</label>
-                        <input type="text" id="cargo" name="cargo" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="agencia">Agencia *</label>
-                        <input type="text" id="agencia" name="agencia" required>
-                    </div>
-                </div>
-            </div>
+  <h2>Formulario de Distribución de Tiempo</h2>
+  <form id="formulario">
+    <label>Nombre:</label>
+    <input type="text" name="nombre" required>
 
-            <!-- Definiciones -->
-            <div class="definitions">
-                <h3>Definiciones</h3>
-                <p><strong>Por favor lea detenidamente a fin de responder correctamente.</strong></p>
-                
-                <p><strong>1. Otorgamiento de crédito:</strong> Incluye todas las actividades relacionadas con el prospección, diseño de proyectos, presupuestos, diseño de manuales reglamentos procedimientos, instructivos, análisis, trámite y aprobación de solicitudes de crédito. Comprende la atención a los asociados para recibir documentación, análisis de capacidad de pago, verificación de requisitos, estudio de crédito, elaboración y legalización de pagarés o garantías, polizas y desembolso de los recursos.</p>
-                
-                <p><strong>2. Seguimiento y control de cartera:</strong> Hace referencia al monitoreo del comportamiento de los créditos vigentes. Incluye la revisión periódica de vencimientos, análisis de alertas de mora, contacto preventivo con asociados para evitar atrasos, validación de aplicación de pagos, ajustes administrativos a créditos y elaboración de reportes de seguimiento interno.</p>
-                
-                <p><strong>3. Cobranza:</strong> Corresponde a las gestiones preventivas así como las realizadas sobre créditos en mora. Abarca contacto con asociados en mora, elaboración de acuerdos de pago, recuperación extrajudicial, reportes a centrales de riesgo, y coordinación con jurídicos en casos de cobranza judicial. También incluye el seguimiento a compromisos de pago establecidos. Cobranza prejurídica, jurídica.</p>
-            </div>
+    <label>Proceso/Área:</label>
+    <input type="text" name="proceso" required>
 
-            <!-- Asignación de Actividades -->
-            <div class="section">
-                <h2 class="section-title">Actividades y Asignación de Tiempo</h2>
-                <p><strong>Instrucciones:</strong> Seleccione el porcentaje de tiempo mensual que dedica a cada actividad. La suma total no debe superar el 100%.</p>
-                
-                <div class="activity-grid">
-                    <table class="grid-table">
-                        <thead>
-                            <tr>
-                                <th class="activity-name">Actividad</th>
-                                <th>0%</th>
-                                <th>1-10%</th>
-                                <th>11-20%</th>
-                                <th>21-30%</th>
-                                <th>31-40%</th>
-                                <th>41-50%</th>
-                                <th>Más del 50%</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="activity-name">Otorgamiento de crédito</td>
-                                <td><div class="radio-group"><input type="radio" name="otorgamiento" value="0" data-min="0" data-max="0"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="otorgamiento" value="5" data-min="1" data-max="10"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="otorgamiento" value="15" data-min="11" data-max="20"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="otorgamiento" value="25" data-min="21" data-max="30"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="otorgamiento" value="35" data-min="31" data-max="40"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="otorgamiento" value="45" data-min="41" data-max="50"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="otorgamiento" value="60" data-min="51" data-max="100"></div></td>
-                            </tr>
-                            <tr>
-                                <td class="activity-name">Seguimiento y control de cartera</td>
-                                <td><div class="radio-group"><input type="radio" name="seguimiento" value="0" data-min="0" data-max="0"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="seguimiento" value="5" data-min="1" data-max="10"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="seguimiento" value="15" data-min="11" data-max="20"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="seguimiento" value="25" data-min="21" data-max="30"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="seguimiento" value="35" data-min="31" data-max="40"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="seguimiento" value="45" data-min="41" data-max="50"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="seguimiento" value="60" data-min="51" data-max="100"></div></td>
-                            </tr>
-                            <tr>
-                                <td class="activity-name">Cobranza</td>
-                                <td><div class="radio-group"><input type="radio" name="cobranza" value="0" data-min="0" data-max="0"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="cobranza" value="5" data-min="1" data-max="10"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="cobranza" value="15" data-min="11" data-max="20"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="cobranza" value="25" data-min="21" data-max="30"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="cobranza" value="35" data-min="31" data-max="40"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="cobranza" value="45" data-min="41" data-max="50"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="cobranza" value="60" data-min="51" data-max="100"></div></td>
-                            </tr>
-                            <tr>
-                                <td class="activity-name">Captaciones (ahorro y crédito)</td>
-                                <td><div class="radio-group"><input type="radio" name="captaciones" value="0" data-min="0" data-max="0"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="captaciones" value="5" data-min="1" data-max="10"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="captaciones" value="15" data-min="11" data-max="20"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="captaciones" value="25" data-min="21" data-max="30"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="captaciones" value="35" data-min="31" data-max="40"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="captaciones" value="45" data-min="41" data-max="50"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="captaciones" value="60" data-min="51" data-max="100"></div></td>
-                            </tr>
-                            <tr>
-                                <td class="activity-name">Aportes</td>
-                                <td><div class="radio-group"><input type="radio" name="aportes" value="0" data-min="0" data-max="0"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="aportes" value="5" data-min="1" data-max="10"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="aportes" value="15" data-min="11" data-max="20"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="aportes" value="25" data-min="21" data-max="30"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="aportes" value="35" data-min="31" data-max="40"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="aportes" value="45" data-min="41" data-max="50"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="aportes" value="60" data-min="51" data-max="100"></div></td>
-                            </tr>
-                            <tr>
-                                <td class="activity-name">Labores administrativas generales</td>
-                                <td><div class="radio-group"><input type="radio" name="administrativas" value="0" data-min="0" data-max="0"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="administrativas" value="5" data-min="1" data-max="10"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="administrativas" value="15" data-min="11" data-max="20"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="administrativas" value="25" data-min="21" data-max="30"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="administrativas" value="35" data-min="31" data-max="40"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="administrativas" value="45" data-min="41" data-max="50"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="administrativas" value="60" data-min="51" data-max="100"></div></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+    <label>Cédula:</label>
+    <input type="text" name="cedula" required>
 
-                <!-- Procesos específicos del cargo -->
-                <div class="form-group" style="margin-top: 20px;">
-                    <label for="procesos_especificos">Procesos específicos de su cargo (opcional)</label>
-                    <input type="text" id="procesos_especificos" name="procesos_especificos" placeholder="Describa brevemente los procesos específicos de su cargo">
-                </div>
+    <label>Cargo:</label>
+    <input type="text" name="cargo" required>
 
-                <div class="form-group">
-                    <label for="porcentaje_especificos">Porcentaje de tiempo dedicado a procesos específicos (%)</label>
-                    <select id="porcentaje_especificos" name="porcentaje_especificos">
-                        <option value="0">0%</option>
-                        <option value="5">1-10%</option>
-                        <option value="15">11-20%</option>
-                        <option value="25">21-30%</option>
-                        <option value="35">31-40%</option>
-                        <option value="45">41-50%</option>
-                        <option value="60">Más del 50%</option>
-                    </select>
-                </div>
+    <label>Agencia:</label>
+    <input type="text" name="agencia" required>
 
-                <!-- Display del total -->
-                <div class="total-display">
-                    <h3>Total de Tiempo Asignado</h3>
-                    <div class="total-percentage" id="totalPercentage">0%</div>
-                    <p id="totalStatus">Seleccione los porcentajes para cada actividad</p>
-                </div>
+    <!-- Campos de porcentaje -->
+    <label>Otorgamiento Crédito (%):</label>
+    <input type="number" name="otorgamiento" min="0" max="100" required>
 
-                <div class="warning" id="warningMessage">
-                    ⚠️ <strong>Atención:</strong> La suma de porcentajes supera el 100%. Por favor ajuste los valores.
-                </div>
+    <label>Seguimiento Cartera (%):</label>
+    <input type="number" name="seguimiento" min="0" max="100" required>
 
-                <div class="success" id="successMessage">
-                    ✅ <strong>Perfecto:</strong> La distribución de tiempo es correcta.
-                </div>
-            </div>
+    <label>Cobranza (%):</label>
+    <input type="number" name="cobranza" min="0" max="100" required>
 
-            <button type="submit" class="submit-btn" id="submitBtn" disabled>
-                Enviar Formulario
-            </button>
+    <label>Captaciones (%):</label>
+    <input type="number" name="captaciones" min="0" max="100" required>
 
-            <div class="loading" id="loadingMessage">
-                Enviando información...
-            </div>
-        </form>
-    </div>
+    <label>Aportes (%):</label>
+    <input type="number" name="aportes" min="0" max="100" required>
 
-    <script>
-        // URL de tu Google Apps Script
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwAiiRsTfNg5ebUPNkWuG9PvoiW0fUKP3JPaV45JbjJULcMwpTqF1HDEobUktf8IR4CIA/exec';
+    <label>Labores Administrativas (%):</label>
+    <input type="number" name="administrativas" min="0" max="100" required>
 
-        // Elementos del DOM
-        const form = document.getElementById('activityForm');
-        const totalPercentageElement = document.getElementById('totalPercentage');
-        const totalStatusElement = document.getElementById('totalStatus');
-        const warningMessage = document.getElementById('warningMessage');
-        const successMessage = document.getElementById('successMessage');
-        const submitBtn = document.getElementById('submitBtn');
-        const loadingMessage = document.getElementById('loadingMessage');
-        const porcentajeEspecificosSelect = document.getElementById('porcentaje_especificos');
+    <label>Procesos Específicos (Descripción):</label>
+    <input type="text" id="procesos_especificos" name="procesos_especificos" placeholder="Especifica otras tareas si aplica">
 
-        // Función para calcular el total
-        function calculateTotal() {
-            let total = 0;
-            
-            // Obtener valores de radio buttons
-            const activities = ['otorgamiento', 'seguimiento', 'cobranza', 'captaciones', 'aportes', 'administrativas'];
-            
-            activities.forEach(activity => {
-                const selectedRadio = document.querySelector(`input[name="${activity}"]:checked`);
-                if (selectedRadio) {
-                    total += parseInt(selectedRadio.value);
-                }
-            });
+    <label>Procesos Específicos (%):</label>
+    <input type="number" name="porcentaje_especificos" min="0" max="100">
 
-            // Agregar porcentaje de procesos específicos
-            const procesosEspecificos = parseInt(porcentajeEspecificosSelect.value) || 0;
-            total += procesosEspecificos;
+    <label>Total (%):</label>
+    <input type="number" name="total_porcentaje" id="total_porcentaje" readonly>
 
-            return total;
-        }
+    <button type="submit">Enviar</button>
+  </form>
 
-        // Función para actualizar la visualización del total
-        function updateTotalDisplay() {
-            const total = calculateTotal();
-            totalPercentageElement.textContent = total + '%';
-            
-            // Ocultar todos los mensajes primero
-            warningMessage.style.display = 'none';
-            successMessage.style.display = 'none';
-            
-            if (total === 0) {
-                totalStatusElement.textContent = 'Seleccione los porcentajes para cada actividad';
-                submitBtn.disabled = true;
-            } else if (total > 100) {
-                totalStatusElement.textContent = 'Excede el 100% - Ajuste los valores';
-                warningMessage.style.display = 'block';
-                submitBtn.disabled = true;
-                totalPercentageElement.style.color = '#721c24';
-            } else if (total === 100) {
-                totalStatusElement.textContent = '¡Perfecto! Distribución completa';
-                successMessage.style.display = 'block';
-                submitBtn.disabled = false;
-                totalPercentageElement.style.color = '#155724';
-            } else {
-                totalStatusElement.textContent = `Resta ${100 - total}% por asignar`;
-                submitBtn.disabled = false;
-                totalPercentageElement.style.color = '#856404';
-            }
-        }
+  <script>
+    document.getElementById("formulario").addEventListener("submit", function (e) {
+      e.preventDefault();
 
-        // Event listeners para todos los radio buttons
-        document.querySelectorAll('input[type="radio"]').forEach(radio => {
-            radio.addEventListener('change', updateTotalDisplay);
+      const form = e.target;
+      const total =
+        Number(form.otorgamiento.value) +
+        Number(form.seguimiento.value) +
+        Number(form.cobranza.value) +
+        Number(form.captaciones.value) +
+        Number(form.aportes.value) +
+        Number(form.administrativas.value) +
+        Number(form.porcentaje_especificos.value || 0);
+
+      if (total > 100) {
+        alert("⚠️ La suma de los porcentajes no puede superar el 100%. Actualmente suma: " + total + "%");
+        return;
+      }
+
+      document.getElementById("total_porcentaje").value = total;
+
+      const formData = new FormData(form);
+      formData.append("procesos_especificos", document.getElementById("procesos_especificos").value);
+      formData.append("total_porcentaje", total);
+
+      fetch("https://script.google.com/macros/s/AKfycbwAiiRsTfNg5ebUPNkWuG9PvoiW0fUKP3JPaV45JbjJULcMwpTqF1HDEobUktf8IR4CIA/exec", {
+        method: "POST",
+        body: formData,
+      })
+        .then((res) => res.text())
+        .then((data) => {
+          alert("✅ Formulario enviado: " + data);
+          form.reset();
+          document.getElementById("total_porcentaje").value = "";
+        })
+        .catch((error) => {
+          alert("❌ Error al enviar el formulario");
+          console.error(error);
         });
-
-        // Event listener para procesos específicos
-        porcentajeEspecificosSelect.addEventListener('change', updateTotalDisplay);
-
-        // Manejar envío del formulario
-        form.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const total = calculateTotal();
-            if (total > 100) {
-                alert('No se puede enviar el formulario porque la suma de porcentajes supera el 100%');
-                return;
-            }
-
-            // Mostrar loading
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Enviando...';
-            loadingMessage.style.display = 'block';
-
-            try {
-                // Recopilar todos los datos del formulario
-                const formData = new FormData(form);
-                
-                // Agregar los valores de los radio buttons seleccionados
-                const activities = ['otorgamiento', 'seguimiento', 'cobranza', 'captaciones', 'aportes', 'administrativas'];
-                activities.forEach(activity => {
-                    const selectedRadio = document.querySelector(`input[name="${activity}"]:checked`);
-                    if (selectedRadio) {
-                        formData.append(activity, selectedRadio.value);
-                        // También agregar el rango textual
-                        const min = selectedRadio.getAttribute('data-min');
-                        const max = selectedRadio.getAttribute('data-max');
-                        if (min === '0' && max === '0') {
-                            formData.append(activity + '_rango', '0%');
-                        } else if (max === '100') {
-                            formData.append(activity + '_rango', 'Más del 50%');
-                        } else {
-                            formData.append(activity + '_rango', `${min}-${max}%`);
-                        }
-                    }
-                });
-
-                formData.append('total_porcentaje', total);
-                formData.append('timestamp', new Date().toISOString());
-
-                // Convertir FormData a URL-encoded
-                const formEntries = new URLSearchParams();
-                for (const pair of formData.entries()) {
-                    formEntries.append(pair[0], pair[1]);
-                }
-                
-                const response = await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: formEntries
-                });
-
-                const result = await response.text();
-                
-                if (response.ok) {
-                    alert('✅ Formulario enviado exitosamente. Gracias por su participación.');
-                    form.reset();
-                    updateTotalDisplay();
-                } else {
-                    throw new Error('Error en el servidor');
-                }
-
-            } catch (error) {
-                console.error('Error:', error);
-                alert('❌ Ocurrió un error al enviar el formulario. Por favor intente nuevamente.');
-            } finally {
-                // Ocultar loading
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Enviar Formulario';
-                loadingMessage.style.display = 'none';
-                updateTotalDisplay();
-            }
-        });
-
-        // Inicializar la visualización
-        updateTotalDisplay();
-    </script>
+    });
+  </script>
 </body>
 </html>
