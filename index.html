@@ -537,10 +537,16 @@
                 formData.append('total_porcentaje', total);
                 formData.append('timestamp', new Date().toISOString());
 
-                // Enviar a Google Apps Script
+                // Convertir FormData a URL-encoded
+                const formEntries = new URLSearchParams();
+                for (const pair of formData.entries()) {
+                    formEntries.append(pair[0], pair[1]);
+                }
+                
                 const response = await fetch(SCRIPT_URL, {
                     method: 'POST',
-                    body: formData
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: formEntries
                 });
 
                 const result = await response.text();
