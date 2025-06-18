@@ -381,150 +381,121 @@
             </div>
         </form>
     </div>
+<script>
+    // URL de tu Google Apps Script
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzjl1wai5g-MvbjvYYbKLoi18pPU9Y2jHfAje-Q8KSxRT3_0se0EGxERMWiUJmgaXvJZw/exec';
 
-    <script>
-        // URL de tu Google Apps Script
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzjl1wai5g-MvbjvYYbKLoi18pPU9Y2jHfAje-Q8KSxRT3_0se0EGxERMWiUJmgaXvJZw/exec';
+    // Elementos del DOM
+    const form = document.getElementById('activityForm');
+    const totalPercentageElement = document.getElementById('totalPercentage');
+    const totalStatusElement = document.getElementById('totalStatus');
+    const warningMessage = document.getElementById('warningMessage');
+    const successMessage = document.getElementById('successMessage');
+    const submitBtn = document.getElementById('submitBtn');
+    const loadingMessage = document.getElementById('loadingMessage');
 
-        // Elementos del DOM
-        const form = document.getElementById('activityForm');
-        const totalPercentageElement = document.getElementById('totalPercentage');
-        const totalStatusElement = document.getElementById('totalStatus');
-        const warningMessage = document.getElementById('warningMessage');
-        const successMessage = document.getElementById('successMessage');
-        const submitBtn = document.getElementById('submitBtn');
-        const loadingMessage = document.getElementById('loadingMessage');
-        const porcentajeEspecificosSelect = document.getElementById('porcentaje_especificos');
+    // Función para calcular el total
+    function calculateTotal() {
+        let total = 0;
+        const inputs = document.querySelectorAll('.percent-input');
+        inputs.forEach(input => {
+            const value = parseInt(input.value) || 0;
+            total += value;
+        });
+        return total;
+    }
 
-        // Función para calcular el total
-        function calculateTotal() {
-            let total = 0;
-            
-            // Obtener valores de radio buttons
-            const activities = ['otorgamiento', 'seguimiento', 'cobranza', 'captaciones', 'aportes', 'administrativas'];
-            
-            activities.forEach(activity => {
-                const selectedRadio = document.querySelector(`input[name="${activity}"]:checked`);
-                if (selectedRadio) {
-                    total += parseInt(selectedRadio.value);
-                }
+    // Función para actualizar la visualización del total
+    function updateTotalDisplay() {
+        const total = calculateTotal();
+        totalPercentageElement.textContent = total + '%';
+
+        // Ocultar todos los mensajes primero
+        warningMessage.style.display = 'none';
+        successMessage.style.display = 'none';
+
+        if (total === 0) {
+            totalStatusElement.textContent = 'Seleccione los porcentajes para cada actividad';
+            submitBtn.disabled = true;
+        } else if (total > 100) {
+            totalStatusElement.textContent = 'Excede el 100% - Ajuste los valores';
+            warningMessage.style.display = 'block';
+            submitBtn.disabled = true;
+            totalPercentageElement.style.color = '#721c24';
+        } else if (total === 100) {
+            totalStatusElement.textContent = '¡Perfecto! Distribución completa';
+            successMessage.style.display = 'block';
+            submitBtn.disabled = false;
+            totalPercentageElement.style.color = '#155724';
+        } else {
+            totalStatusElement.textContent = `Resta ${100 - total}% por asignar`;
+            submitBtn.disabled = false;
+            totalPercentageElement.style.color = '#856404';
+        }
+    }
+
+    // Event listeners para inputs de porcentaje
+    document.querySelectorAll('.percent-input').forEach(input => {
+        input.addEventListener('input', updateTotalDisplay);
+    });
+
+    // Manejar envío del formulario
+    form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const total = calculateTotal();
+        if (total > 100) {
+            alert('No se puede enviar el formulario porque la suma de porcentajes supera el 100%');
+            return;
+        }
+
+        // Mostrar loading
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Enviando...';
+        loadingMessage.style.display = 'block';
+
+        try {
+            const formData = new FormData(form);
+
+            // Adjuntar valores manuales de las actividades
+            document.querySelectorAll('.percent-input').forEach(input => {
+                formData.set(input.name, input.value || '0');
             });
 
-            // Agregar porcentaje de procesos específicos
-            const procesosEspecificos = parseInt(porcentajeEspecificosSelect.value) || 0;
-            total += procesosEspecificos;
+            formData.append('total_porcentaje', total);
+            formData.append('timestamp', new Date().toISOString());
 
-            return total;
-        }
+            const response = await fetch(SCRIPT_URL, {
+                method: 'POST',
+                body: formData
+            });
 
-        // Función para actualizar la visualización del total
-        function updateTotalDisplay() {
-            const total = calculateTotal();
-            totalPercentageElement.textContent = total + '%';
-            
-            // Ocultar todos los mensajes primero
-            warningMessage.style.display = 'none';
-            successMessage.style.display = 'none';
-            
-            if (total === 0) {
-                totalStatusElement.textContent = 'Seleccione los porcentajes para cada actividad';
-                submitBtn.disabled = true;
-            } else if (total > 100) {
-                totalStatusElement.textContent = 'Excede el 100% - Ajuste los valores';
-                warningMessage.style.display = 'block';
-                submitBtn.disabled = true;
-                totalPercentageElement.style.color = '#721c24';
-            } else if (total === 100) {
-                totalStatusElement.textContent = '¡Perfecto! Distribución completa';
-                successMessage.style.display = 'block';
-                submitBtn.disabled = false;
-                totalPercentageElement.style.color = '#155724';
-            } else {
-                totalStatusElement.textContent = `Resta ${100 - total}% por asignar`;
-                submitBtn.disabled = false;
-                totalPercentageElement.style.color = '#856404';
-            }
-        }
+            const result = await response.text();
 
-        // Event listeners para todos los radio buttons
-        document.querySelectorAll('input[type="radio"]').forEach(radio => {
-            radio.addEventListener('change', updateTotalDisplay);
-        });
-
-        // Event listener para procesos específicos
-        porcentajeEspecificosSelect.addEventListener('change', updateTotalDisplay);
-
-        // Manejar envío del formulario
-        form.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const total = calculateTotal();
-            if (total > 100) {
-                alert('No se puede enviar el formulario porque la suma de porcentajes supera el 100%');
-                return;
-            }
-
-            // Mostrar loading
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Enviando...';
-            loadingMessage.style.display = 'block';
-
-            try {
-                // Recopilar todos los datos del formulario
-                const formData = new FormData(form);
-                
-                // Agregar los valores de los radio buttons seleccionados
-                const activities = ['otorgamiento', 'seguimiento', 'cobranza', 'captaciones', 'aportes', 'administrativas'];
-                activities.forEach(activity => {
-                    const selectedRadio = document.querySelector(`input[name="${activity}"]:checked`);
-                    if (selectedRadio) {
-                        formData.append(activity, selectedRadio.value);
-                        // También agregar el rango textual
-                        const min = selectedRadio.getAttribute('data-min');
-                        const max = selectedRadio.getAttribute('data-max');
-                        if (min === '0' && max === '0') {
-                            formData.append(activity + '_rango', '0%');
-                        } else if (max === '100') {
-                            formData.append(activity + '_rango', 'Más del 50%');
-                        } else {
-                            formData.append(activity + '_rango', `${min}-${max}%`);
-                        }
-                    }
-                });
-
-                formData.append('total_porcentaje', total);
-                formData.append('timestamp', new Date().toISOString());
-
-                // Enviar a Google Apps Script
-                const response = await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    body: formData
-                });
-
-                const result = await response.text();
-                
-                if (response.ok) {
-                    alert('✅ Formulario enviado exitosamente. Gracias por su participación.');
-                    form.reset();
-                    updateTotalDisplay();
-                } else {
-                    throw new Error('Error en el servidor');
-                }
-
-            } catch (error) {
-                console.error('Error:', error);
-                alert('❌ Ocurrió un error al enviar el formulario. Por favor intente nuevamente.');
-            } finally {
-                // Ocultar loading
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Enviar Formulario';
-                loadingMessage.style.display = 'none';
+            if (response.ok) {
+                alert('✅ Formulario enviado exitosamente. Gracias por su participación.');
+                form.reset();
                 updateTotalDisplay();
+            } else {
+                throw new Error('Error en el servidor');
             }
-        });
 
-        // Inicializar la visualización
-        updateTotalDisplay();
-    </script>
+        } catch (error) {
+            console.error('Error:', error);
+            alert('❌ Ocurrió un error al enviar el formulario. Por favor intente nuevamente.');
+        } finally {
+            // Ocultar loading
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Enviar Formulario';
+            loadingMessage.style.display = 'none';
+            updateTotalDisplay();
+        }
+    });
+
+    // Inicializar la visualización al cargar
+    updateTotalDisplay();
+</script>
+
+   
 </body>
 </html>
