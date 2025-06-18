@@ -298,98 +298,61 @@
             <!-- Asignación de Actividades -->
             <div class="section">
                 <h2 class="section-title">Actividades y Asignación de Tiempo</h2>
-                <p><strong>Instrucciones:</strong> Seleccione el porcentaje de tiempo mensual que dedica a cada actividad. La suma total no debe superar el 100%.</p>
-                
+                <p><strong>Instrucciones:</strong> Indique el porcentaje de tiempo mensual que dedica a cada actividad. La suma
+                    total no debe superar el 100%.</p>
+            
                 <div class="activity-grid">
                     <table class="grid-table">
                         <thead>
                             <tr>
                                 <th class="activity-name">Actividad</th>
-                                <th>0%</th>
-                                <th>1-10%</th>
-                                <th>11-20%</th>
-                                <th>21-30%</th>
-                                <th>31-40%</th>
-                                <th>41-50%</th>
-                                <th>Más del 50%</th>
+                                <th colspan="7">Porcentaje asignado (%)</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td class="activity-name">Otorgamiento de crédito</td>
-                                <td colspan="7"><input type="number" name="otorgamiento" min="0" max="100" class="percent-input" /></td>
+                                <td colspan="7"><input type="number" name="otorgamiento" min="0" max="100" class="percent-input" />
+                                </td>
                             </tr>
                             <tr>
                                 <td class="activity-name">Seguimiento y control de cartera</td>
-                                <td><div class="radio-group"><input type="radio" name="seguimiento" value="0" data-min="0" data-max="0"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="seguimiento" value="5" data-min="1" data-max="10"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="seguimiento" value="15" data-min="11" data-max="20"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="seguimiento" value="25" data-min="21" data-max="30"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="seguimiento" value="35" data-min="31" data-max="40"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="seguimiento" value="45" data-min="41" data-max="50"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="seguimiento" value="60" data-min="51" data-max="100"></div></td>
+                                <td colspan="7"><input type="number" name="seguimiento" min="0" max="100" class="percent-input" />
+                                </td>
                             </tr>
                             <tr>
                                 <td class="activity-name">Cobranza</td>
-                                <td><div class="radio-group"><input type="radio" name="cobranza" value="0" data-min="0" data-max="0"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="cobranza" value="5" data-min="1" data-max="10"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="cobranza" value="15" data-min="11" data-max="20"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="cobranza" value="25" data-min="21" data-max="30"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="cobranza" value="35" data-min="31" data-max="40"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="cobranza" value="45" data-min="41" data-max="50"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="cobranza" value="60" data-min="51" data-max="100"></div></td>
+                                <td colspan="7"><input type="number" name="cobranza" min="0" max="100" class="percent-input" /></td>
                             </tr>
                             <tr>
                                 <td class="activity-name">Captaciones (ahorro y crédito)</td>
-                                <td><div class="radio-group"><input type="radio" name="captaciones" value="0" data-min="0" data-max="0"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="captaciones" value="5" data-min="1" data-max="10"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="captaciones" value="15" data-min="11" data-max="20"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="captaciones" value="25" data-min="21" data-max="30"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="captaciones" value="35" data-min="31" data-max="40"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="captaciones" value="45" data-min="41" data-max="50"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="captaciones" value="60" data-min="51" data-max="100"></div></td>
+                                <td colspan="7"><input type="number" name="captaciones" min="0" max="100" class="percent-input" />
+                                </td>
                             </tr>
                             <tr>
                                 <td class="activity-name">Aportes</td>
-                                <td><div class="radio-group"><input type="radio" name="aportes" value="0" data-min="0" data-max="0"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="aportes" value="5" data-min="1" data-max="10"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="aportes" value="15" data-min="11" data-max="20"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="aportes" value="25" data-min="21" data-max="30"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="aportes" value="35" data-min="31" data-max="40"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="aportes" value="45" data-min="41" data-max="50"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="aportes" value="60" data-min="51" data-max="100"></div></td>
+                                <td colspan="7"><input type="number" name="aportes" min="0" max="100" class="percent-input" /></td>
                             </tr>
                             <tr>
                                 <td class="activity-name">Labores administrativas generales</td>
-                                <td><div class="radio-group"><input type="radio" name="administrativas" value="0" data-min="0" data-max="0"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="administrativas" value="5" data-min="1" data-max="10"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="administrativas" value="15" data-min="11" data-max="20"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="administrativas" value="25" data-min="21" data-max="30"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="administrativas" value="35" data-min="31" data-max="40"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="administrativas" value="45" data-min="41" data-max="50"></div></td>
-                                <td><div class="radio-group"><input type="radio" name="administrativas" value="60" data-min="51" data-max="100"></div></td>
+                                <td colspan="7"><input type="number" name="administrativas" min="0" max="100"
+                                        class="percent-input" /></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-
+            
                 <!-- Procesos específicos del cargo -->
                 <div class="form-group" style="margin-top: 20px;">
-                    <label for="procesos_especificos">Procesos específicos de su cargo (opcional)</label>
-                    <input type="text" id="procesos_especificos" name="procesos_especificos" placeholder="Describa brevemente los procesos específicos de su cargo">
+                    <label for="procesos_especificos">Procesos específicos de su cargo</label>
+                    <input type="text" id="procesos_especificos" name="procesos_especificos"
+                        placeholder="Describa brevemente los procesos específicos de su cargo">
                 </div>
 
                 <div class="form-group">
                     <label for="porcentaje_especificos">Porcentaje de tiempo dedicado a procesos específicos (%)</label>
-                    <select id="porcentaje_especificos" name="porcentaje_especificos">
-                        <option value="0">0%</option>
-                        <option value="5">1-10%</option>
-                        <option value="15">11-20%</option>
-                        <option value="25">21-30%</option>
-                        <option value="35">31-40%</option>
-                        <option value="45">41-50%</option>
-                        <option value="60">Más del 50%</option>
-                    </select>
+                    <input type="number" id="porcentaje_especificos" name="porcentaje_especificos" class="percent-input" min="0"
+                        max="100" placeholder="Ej. 10">
                 </div>
 
                 <!-- Display del total -->
@@ -398,15 +361,16 @@
                     <div class="total-percentage" id="totalPercentage">0%</div>
                     <p id="totalStatus">Seleccione los porcentajes para cada actividad</p>
                 </div>
-
+            
                 <div class="warning" id="warningMessage">
                     ⚠️ <strong>Atención:</strong> La suma de porcentajes supera el 100%. Por favor ajuste los valores.
                 </div>
-
+            
                 <div class="success" id="successMessage">
                     ✅ <strong>Perfecto:</strong> La distribución de tiempo es correcta.
                 </div>
             </div>
+
 
             <button type="submit" class="submit-btn" id="submitBtn" disabled>
                 Enviar Formulario
