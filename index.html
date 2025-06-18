@@ -1,286 +1,288 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario de Asignación de Tiempo por Actividades</title>
-   <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-        min-height: 100vh;
-        padding: 20px;
-        line-height: 1.6;
-    }
-
-    .form-container {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
-        padding: 40px;
-        border-radius: 20px;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        max-width: 1000px;
-        margin: 0 auto;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .form-title {
-        text-align: center;
-        color: #1e3c72;
-        margin-bottom: 30px;
-        font-size: 2.2em;
-        font-weight: 700;
-    }
-
-    .section {
-        margin-bottom: 30px;
-        padding: 20px;
-        background: rgba(248, 249, 250, 0.8);
-        border-radius: 15px;
-        border-left: 5px solid #1e3c72;
-    }
-
-    .section-title {
-        color: #1e3c72;
-        font-size: 1.4em;
-        font-weight: 600;
-        margin-bottom: 20px;
-    }
-
-    .form-group {
-        margin-bottom: 20px;
-    }
-
-    .form-group label {
-        display: block;
-        margin-bottom: 8px;
-        color: #333;
-        font-weight: 500;
-        font-size: 14px;
-    }
-
-    .form-group input,
-    .form-group select {
-        width: 100%;
-        padding: 12px;
-        border: 2px solid #e1e5e9;
-        border-radius: 8px;
-        font-size: 16px;
-        transition: all 0.3s ease;
-    }
-
-    .form-group input:focus,
-    .form-group select:focus {
-        outline: none;
-        border-color: #1e3c72;
-        box-shadow: 0 0 10px rgba(30, 60, 114, 0.2);
-    }
-
-    /* Estilo mejorado para inputs numéricos */
-    input[type="number"].percent-input {
-        appearance: textfield;
-        -moz-appearance: textfield;
-        padding: 10px 14px;
-        font-size: 16px;
-        border: 2px solid #d0d7de;
-        border-radius: 10px;
-        background-color: #fff;
-        color: #333;
-        text-align: center;
-        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
-        transition: border-color 0.3s, box-shadow 0.3s;
-    }
-
-    input[type="number"].percent-input:focus {
-        outline: none;
-        border-color: #1e3c72;
-        box-shadow: 0 0 8px rgba(30, 60, 114, 0.3);
-    }
-
-    input[type="number"].percent-input::-webkit-outer-spin-button,
-    input[type="number"].percent-input::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-
-    .form-row {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 20px;
-    }
-
-    .definitions {
-        background: #e8f4f8;
-        padding: 20px;
-        border-radius: 10px;
-        margin-bottom: 30px;
-    }
-
-    .definitions h3 {
-        color: #1e3c72;
-        margin-bottom: 15px;
-    }
-
-    .definitions p {
-        margin-bottom: 15px;
-        text-align: justify;
-    }
-
-    .activity-grid {
-        overflow-x: auto;
-        margin-top: 20px;
-    }
-
-    .grid-table {
-        width: 100%;
-        border-collapse: collapse;
-        background: white;
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .grid-table th,
-    .grid-table td {
-        padding: 12px;
-        text-align: center;
-        border: 1px solid #ddd;
-    }
-
-    .grid-table th {
-        background: #1e3c72;
-        color: white;
-        font-weight: 600;
-        font-size: 14px;
-    }
-
-    .grid-table tr:nth-child(even) {
-        background: #f8f9fa;
-    }
-
-    .activity-name {
-        text-align: left !important;
-        font-weight: 500;
-        color: #333;
-        min-width: 200px;
-    }
-
-    .radio-group {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .radio-group input[type="radio"] {
-        width: auto;
-        margin: 0;
-        transform: scale(1.2);
-        cursor: pointer;
-    }
-
-    .total-display {
-        background: #fff3cd;
-        border: 2px solid #ffeaa7;
-        border-radius: 10px;
-        padding: 20px;
-        margin: 20px 0;
-        text-align: center;
-    }
-
-    .total-percentage {
-        font-size: 2em;
-        font-weight: bold;
-        color: #856404;
-        margin: 10px 0;
-    }
-
-    .warning {
-        color: #721c24;
-        background: #f8d7da;
-        padding: 15px;
-        border-radius: 8px;
-        margin: 10px 0;
-        border: 1px solid #f5c6cb;
-        display: none;
-    }
-
-    .success {
-        color: #155724;
-        background: #d4edda;
-        padding: 15px;
-        border-radius: 8px;
-        margin: 10px 0;
-        border: 1px solid #c3e6cb;
-        display: none;
-    }
-
-    .submit-btn {
-        width: 100%;
-        padding: 15px;
-        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-        color: white;
-        border: none;
-        border-radius: 12px;
-        font-size: 18px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        margin-top: 20px;
-    }
-
-    .submit-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 25px rgba(30, 60, 114, 0.3);
-    }
-
-    .submit-btn:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-        transform: none;
-    }
-
-    .loading {
-        display: none;
-        text-align: center;
-        margin-top: 20px;
-        color: #1e3c72;
-        font-weight: 500;
-    }
-
-    @media (max-width: 768px) {
-        .form-container {
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
             padding: 20px;
-            margin: 10px;
+            line-height: 1.6;
+        }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 1000px;
+            margin: 0 auto;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .form-title {
+            text-align: center;
+            color: #1e3c72;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+            font-weight: 700;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(248, 249, 250, 0.8);
+            border-radius: 15px;
+            border-left: 5px solid #1e3c72;
+        }
+
+        .section-title {
+            color: #1e3c72;
+            font-size: 1.4em;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #1e3c72;
+            box-shadow: 0 0 10px rgba(30, 60, 114, 0.2);
+        }
+
+        /* Estilo mejorado para inputs numéricos */
+        input[type="number"].percent-input {
+            appearance: textfield;
+            -moz-appearance: textfield;
+            padding: 10px 14px;
+            font-size: 16px;
+            border: 2px solid #d0d7de;
+            border-radius: 10px;
+            background-color: #fff;
+            color: #333;
+            text-align: center;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input[type="number"].percent-input:focus {
+            outline: none;
+            border-color: #1e3c72;
+            box-shadow: 0 0 8px rgba(30, 60, 114, 0.3);
+        }
+
+        input[type="number"].percent-input::-webkit-outer-spin-button,
+        input[type="number"].percent-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .definitions {
+            background: #e8f4f8;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .definitions h3 {
+            color: #1e3c72;
+            margin-bottom: 15px;
+        }
+
+        .definitions p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .activity-grid {
+            overflow-x: auto;
+            margin-top: 20px;
         }
 
         .grid-table {
-            font-size: 12px;
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         .grid-table th,
         .grid-table td {
-            padding: 8px 4px;
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
         }
 
-        .form-title {
-            font-size: 1.8em;
+        .grid-table th {
+            background: #1e3c72;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
         }
-    }
-</style>
+
+        .grid-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .activity-name {
+            text-align: left !important;
+            font-weight: 500;
+            color: #333;
+            min-width: 200px;
+        }
+
+        .radio-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .radio-group input[type="radio"] {
+            width: auto;
+            margin: 0;
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+
+        .total-display {
+            background: #fff3cd;
+            border: 2px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .total-percentage {
+            font-size: 2em;
+            font-weight: bold;
+            color: #856404;
+            margin: 10px 0;
+        }
+
+        .warning {
+            color: #721c24;
+            background: #f8d7da;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border: 1px solid #f5c6cb;
+            display: none;
+        }
+
+        .success {
+            color: #155724;
+            background: #d4edda;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border: 1px solid #c3e6cb;
+            display: none;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(30, 60, 114, 0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            color: #1e3c72;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 20px;
+                margin: 10px;
+            }
+
+            .grid-table {
+                font-size: 12px;
+            }
+
+            .grid-table th,
+            .grid-table td {
+                padding: 8px 4px;
+            }
+
+            .form-title {
+                font-size: 1.8em;
+            }
+        }
+    </style>
 
 </head>
+
 <body>
     <div class="form-container">
         <h1 class="form-title">Formulario de Asignación de Tiempo por Actividades</h1>
-        
+
         <form id="activityForm">
             <!-- Información Personal -->
             <div class="section">
@@ -306,8 +308,27 @@
                     </div>
                     <div class="form-group">
                         <label for="agencia">Agencia *</label>
-                        <input type="text" id="agencia" name="agencia" required>
+                        <select id="agencia" name="agencia" required>
+                            <option value="">Seleccione una agencia</option>
+                            <option value="ARMENIA">ARMENIA</option>
+                            <option value="TULUA">TULUA</option>
+                            <option value="SANTA ROSA">SANTA ROSA</option>
+                            <option value="PEREIRA">PEREIRA</option>
+                            <option value="CHINCHINA">CHINCHINA</option>
+                            <option value="CALI">CALI</option>
+                            <option value="POPAYAN">POPAYAN</option>
+                            <option value="ZIPAQUIRA">ZIPAQUIRA</option>
+                            <option value="MOSQUERA">MOSQUERA</option>
+                            <option value="TEBAIDA">TEBAIDA</option>
+                            <option value="FUNDADORES">FUNDADORES</option>
+                            <option value="QUIMBAYA">QUIMBAYA</option>
+                            <option value="CARTAGO">CARTAGO</option>
+                            <option value="LA UNION">LA UNION</option>
+                            <option value="BUGA">BUGA</option>
+                            <option value="IBAGUE">IBAGUE</option>
+                        </select>
                     </div>
+                    
                 </div>
             </div>
 
@@ -315,20 +336,34 @@
             <div class="definitions">
                 <h3>Definiciones</h3>
                 <p><strong>Por favor lea detenidamente a fin de responder correctamente.</strong></p>
-                
-                <p><strong>1. Otorgamiento de crédito:</strong> Incluye todas las actividades relacionadas con el prospección, diseño de proyectos, presupuestos, diseño de manuales reglamentos procedimientos, instructivos, análisis, trámite y aprobación de solicitudes de crédito. Comprende la atención a los asociados para recibir documentación, análisis de capacidad de pago, verificación de requisitos, estudio de crédito, elaboración y legalización de pagarés o garantías, polizas y desembolso de los recursos.</p>
-                
-                <p><strong>2. Seguimiento y control de cartera:</strong> Hace referencia al monitoreo del comportamiento de los créditos vigentes. Incluye la revisión periódica de vencimientos, análisis de alertas de mora, contacto preventivo con asociados para evitar atrasos, validación de aplicación de pagos, ajustes administrativos a créditos y elaboración de reportes de seguimiento interno.</p>
-                
-                <p><strong>3. Cobranza:</strong> Corresponde a las gestiones preventivas así como las realizadas sobre créditos en mora. Abarca contacto con asociados en mora, elaboración de acuerdos de pago, recuperación extrajudicial, reportes a centrales de riesgo, y coordinación con jurídicos en casos de cobranza judicial. También incluye el seguimiento a compromisos de pago establecidos. Cobranza prejurídica, jurídica.</p>
+
+                <p><strong>1. Otorgamiento de crédito:</strong> Incluye todas las actividades relacionadas con el
+                    prospección, diseño de proyectos, presupuestos, diseño de manuales reglamentos procedimientos,
+                    instructivos, análisis, trámite y aprobación de solicitudes de crédito. Comprende la atención a los
+                    asociados para recibir documentación, análisis de capacidad de pago, verificación de requisitos,
+                    estudio de crédito, elaboración y legalización de pagarés o garantías, polizas y desembolso de los
+                    recursos.</p>
+
+                <p><strong>2. Seguimiento y control de cartera:</strong> Hace referencia al monitoreo del comportamiento
+                    de los créditos vigentes. Incluye la revisión periódica de vencimientos, análisis de alertas de
+                    mora, contacto preventivo con asociados para evitar atrasos, validación de aplicación de pagos,
+                    ajustes administrativos a créditos y elaboración de reportes de seguimiento interno.</p>
+
+                <p><strong>3. Cobranza:</strong> Corresponde a las gestiones preventivas así como las realizadas sobre
+                    créditos en mora. Abarca contacto con asociados en mora, elaboración de acuerdos de pago,
+                    recuperación extrajudicial, reportes a centrales de riesgo, y coordinación con jurídicos en casos de
+                    cobranza judicial. También incluye el seguimiento a compromisos de pago establecidos. Cobranza
+                    prejurídica, jurídica.</p>
             </div>
 
             <!-- Asignación de Actividades -->
             <div class="section">
                 <h2 class="section-title">Actividades y Asignación de Tiempo</h2>
-                <p><strong>Instrucciones:</strong> Indique el porcentaje de tiempo mensual que dedica a cada actividad. La suma
-                    total no debe superar el 100%.</p>
-            
+                <p><strong>Instrucciones:</strong> Complete el porcentaje de tiempo mensual que destina a cada una de las actividades
+                    listadas.
+                    Los valores deben ser números enteros y la suma total debe ser igual a 100% para poder enviar el formulario.</p>
+                    
+
                 <div class="activity-grid">
                     <table class="grid-table">
                         <thead>
@@ -340,47 +375,48 @@
                         <tbody>
                             <tr>
                                 <td class="activity-name">Otorgamiento de crédito</td>
-                                <td colspan="7"><input type="number" name="otorgamiento" min="0" max="100" class="percent-input" />
+                                <td colspan="7"><input type="number" name="otorgamiento" min="0" max="100"
+                                        class="percent-input" />
                                 </td>
                             </tr>
                             <tr>
                                 <td class="activity-name">Seguimiento y control de cartera</td>
-                                <td colspan="7"><input type="number" name="seguimiento" min="0" max="100" class="percent-input" />
+                                <td colspan="7"><input type="number" name="seguimiento" min="0" max="100"
+                                        class="percent-input" />
                                 </td>
                             </tr>
                             <tr>
                                 <td class="activity-name">Cobranza</td>
-                                <td colspan="7"><input type="number" name="cobranza" min="0" max="100" class="percent-input" /></td>
+                                <td colspan="7"><input type="number" name="cobranza" min="0" max="100"
+                                        class="percent-input" /></td>
                             </tr>
                             <tr>
                                 <td class="activity-name">Captaciones (ahorro y crédito)</td>
-                                <td colspan="7"><input type="number" name="captaciones" min="0" max="100" class="percent-input" />
+                                <td colspan="7"><input type="number" name="captaciones" min="0" max="100"
+                                        class="percent-input" />
                                 </td>
                             </tr>
                             <tr>
                                 <td class="activity-name">Aportes</td>
-                                <td colspan="7"><input type="number" name="aportes" min="0" max="100" class="percent-input" /></td>
+                                <td colspan="7"><input type="number" name="aportes" min="0" max="100"
+                                        class="percent-input" /></td>
                             </tr>
                             <tr>
                                 <td class="activity-name">Labores administrativas generales</td>
                                 <td colspan="7"><input type="number" name="administrativas" min="0" max="100"
                                         class="percent-input" /></td>
                             </tr>
+                            <tr>
+                                <td class="activity-name">Procesos específicos del cargo</td>
+                                <td colspan="7">
+                                    <input type="number" name="porcentaje_especificos" id="porcentaje_especificos" min="0" max="100"
+                                        class="percent-input" placeholder="Ej. 10" />
+                                    <input type="hidden" name="procesos_especificos" id="procesos_especificos" value="">
+                                </td>
+                            </tr>
+                            
                         </tbody>
                     </table>
-                </div>
-            
-                <!-- Procesos específicos del cargo -->
-                <div class="form-group" style="margin-top: 20px;">
-                    <label for="procesos_especificos">Procesos específicos de su cargo</label>
-                    <input type="text" id="procesos_especificos" name="procesos_especificos"
-                        placeholder="Describa brevemente los procesos específicos de su cargo">
-                </div>
-
-                <div class="form-group">
-                    <label for="porcentaje_especificos">Porcentaje de tiempo dedicado a procesos específicos (%)</label>
-                    <input type="number" id="porcentaje_especificos" name="porcentaje_especificos" class="percent-input" min="0"
-                        max="100" placeholder="Ej. 10">
                 </div>
 
                 <!-- Display del total -->
@@ -389,11 +425,11 @@
                     <div class="total-percentage" id="totalPercentage">0%</div>
                     <p id="totalStatus">Seleccione los porcentajes para cada actividad</p>
                 </div>
-            
+
                 <div class="warning" id="warningMessage">
                     ⚠️ <strong>Atención:</strong> La suma de porcentajes supera el 100%. Por favor ajuste los valores.
                 </div>
-            
+
                 <div class="success" id="successMessage">
                     ✅ <strong>Perfecto:</strong> La distribución de tiempo es correcta.
                 </div>
@@ -409,121 +445,124 @@
             </div>
         </form>
     </div>
-<script>
-    // URL de tu Google Apps Script
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzjl1wai5g-MvbjvYYbKLoi18pPU9Y2jHfAje-Q8KSxRT3_0se0EGxERMWiUJmgaXvJZw/exec';
+    <script>
+        // URL de tu Google Apps Script
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzjl1wai5g-MvbjvYYbKLoi18pPU9Y2jHfAje-Q8KSxRT3_0se0EGxERMWiUJmgaXvJZw/exec';
 
-    // Elementos del DOM
-    const form = document.getElementById('activityForm');
-    const totalPercentageElement = document.getElementById('totalPercentage');
-    const totalStatusElement = document.getElementById('totalStatus');
-    const warningMessage = document.getElementById('warningMessage');
-    const successMessage = document.getElementById('successMessage');
-    const submitBtn = document.getElementById('submitBtn');
-    const loadingMessage = document.getElementById('loadingMessage');
+        // Elementos del DOM
+        const form = document.getElementById('activityForm');
+        const totalPercentageElement = document.getElementById('totalPercentage');
+        const totalStatusElement = document.getElementById('totalStatus');
+        const warningMessage = document.getElementById('warningMessage');
+        const successMessage = document.getElementById('successMessage');
+        const submitBtn = document.getElementById('submitBtn');
+        const loadingMessage = document.getElementById('loadingMessage');
 
-    // Función para calcular el total
-    function calculateTotal() {
-        let total = 0;
-        const inputs = document.querySelectorAll('.percent-input');
-        inputs.forEach(input => {
-            const value = parseInt(input.value) || 0;
-            total += value;
-        });
-        return total;
-    }
-
-    // Función para actualizar la visualización del total
-    function updateTotalDisplay() {
-        const total = calculateTotal();
-        totalPercentageElement.textContent = total + '%';
-
-        // Ocultar todos los mensajes primero
-        warningMessage.style.display = 'none';
-        successMessage.style.display = 'none';
-
-        if (total === 0) {
-            totalStatusElement.textContent = 'Seleccione los porcentajes para cada actividad';
-            submitBtn.disabled = true;
-        } else if (total > 100) {
-            totalStatusElement.textContent = 'Excede el 100% - Ajuste los valores';
-            warningMessage.style.display = 'block';
-            submitBtn.disabled = true;
-            totalPercentageElement.style.color = '#721c24';
-        } else if (total === 100) {
-            totalStatusElement.textContent = '¡Perfecto! Distribución completa';
-            successMessage.style.display = 'block';
-            submitBtn.disabled = false;
-            totalPercentageElement.style.color = '#155724';
-        } else {
-            totalStatusElement.textContent = `Resta ${100 - total}% por asignar`;
-            submitBtn.disabled = false;
-            totalPercentageElement.style.color = '#856404';
-        }
-    }
-
-    // Event listeners para inputs de porcentaje
-    document.querySelectorAll('.percent-input').forEach(input => {
-        input.addEventListener('input', updateTotalDisplay);
-    });
-
-    // Manejar envío del formulario
-    form.addEventListener('submit', async function (e) {
-        e.preventDefault();
-
-        const total = calculateTotal();
-        if (total > 100) {
-            alert('No se puede enviar el formulario porque la suma de porcentajes supera el 100%');
-            return;
+        // Función para calcular el total
+        function calculateTotal() {
+            let total = 0;
+            const inputs = document.querySelectorAll('.percent-input');
+            inputs.forEach(input => {
+                const value = parseInt(input.value) || 0;
+                total += value;
+            });
+            return total;
         }
 
-        // Mostrar loading
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Enviando...';
-        loadingMessage.style.display = 'block';
+        // Función para actualizar la visualización del total
+        function updateTotalDisplay() {
+                const total = calculateTotal();
+                totalPercentageElement.textContent = total + '%';
 
-        try {
-            const formData = new FormData(form);
+                // Ocultar todos los mensajes primero
+                warningMessage.style.display = 'none';
+                successMessage.style.display = 'none';
 
-            // Adjuntar valores manuales de las actividades
-            document.querySelectorAll('.percent-input').forEach(input => {
-                formData.set(input.name, input.value || '0');
-            });
-
-            formData.append('total_porcentaje', total);
-            formData.append('timestamp', new Date().toISOString());
-
-            const response = await fetch(SCRIPT_URL, {
-                method: 'POST',
-                body: formData
-            });
-
-            const result = await response.text();
-
-            if (response.ok) {
-                alert('✅ Formulario enviado exitosamente. Gracias por su participación.');
-                form.reset();
-                updateTotalDisplay();
-            } else {
-                throw new Error('Error en el servidor');
+                if (total === 0) {
+                    totalStatusElement.textContent = 'Seleccione los porcentajes para cada actividad';
+                    submitBtn.disabled = true;
+                } else if (total > 100) {
+                    totalStatusElement.textContent = 'Excede el 100% - Ajuste los valores';
+                    warningMessage.style.display = 'block';
+                    submitBtn.disabled = true;
+                    totalPercentageElement.style.color = '#721c24';
+                } else if (total === 100) {
+                    totalStatusElement.textContent = '¡Perfecto! Distribución completa';
+                    successMessage.style.display = 'block';
+                    submitBtn.disabled = false;
+                    totalPercentageElement.style.color = '#155724';
+                } else {
+                    totalStatusElement.textContent = `Resta ${100 - total}% por asignar`;
+                    submitBtn.disabled = true;
+                    totalPercentageElement.style.color = '#856404';
+                }
             }
 
-        } catch (error) {
-            console.error('Error:', error);
-            alert('❌ Ocurrió un error al enviar el formulario. Por favor intente nuevamente.');
-        } finally {
-            // Ocultar loading
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Enviar Formulario';
-            loadingMessage.style.display = 'none';
-            updateTotalDisplay();
-        }
-    });
+        
+        // Event listeners para inputs de porcentaje
+        document.querySelectorAll('.percent-input').forEach(input => {
+            input.addEventListener('input', updateTotalDisplay);
+        });
 
-    // Inicializar la visualización al cargar
-    updateTotalDisplay();
-</script>
+        // Manejar envío del formulario
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
 
-   
+            const total = calculateTotal();
+            if (total !== 100) {
+                alert('❌ El total debe ser exactamente 100%. Actualmente tienes: ' + total + '%.');
+                return;
+            }
+
+
+            // Mostrar loading
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Enviando...';
+            loadingMessage.style.display = 'block';
+
+            try {
+                const formData = new FormData(form);
+
+                // Adjuntar valores manuales de las actividades
+                document.querySelectorAll('.percent-input').forEach(input => {
+                    formData.set(input.name, input.value || '0');
+                });
+
+                formData.append('total_porcentaje', total);
+                formData.append('timestamp', new Date().toISOString());
+
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.text();
+
+                if (response.ok) {
+                    alert('✅ Formulario enviado exitosamente. Gracias por su participación.');
+                    form.reset();
+                    updateTotalDisplay();
+                } else {
+                    throw new Error('Error en el servidor');
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Ocurrió un error al enviar el formulario. Por favor intente nuevamente.');
+            } finally {
+                // Ocultar loading
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Enviar Formulario';
+                loadingMessage.style.display = 'none';
+                updateTotalDisplay();
+            }
+        });
+
+        // Inicializar la visualización al cargar
+        updateTotalDisplay();
+    </script>
+
+
 </body>
+
 </html>
